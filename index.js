@@ -14,7 +14,7 @@ var http = require("http"),
 var Crawler = function(domain,initialPath,initialPort,interval) {
 	// SETTINGS TO STUFF WITH (not here! Do it when you create a `new Crawler()`)
 	// Domain to crawl
-	this.domain				= domain || "";
+	this.domainToCrawl				= domain || "";
 
 	// Gotta start crawling *somewhere*
 	this.initialPath		= initialPath || "/";
@@ -98,7 +98,7 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 	this.fetchConditions = [];
 
 	// Initialise our queue by pushing the initial request data into it...
-	this.queue.add(this.initialProtocol,this.domain,this.initialPort,this.initialPath);
+	this.queue.add(this.initialProtocol,this.domainToCrawl,this.initialPort,this.initialPath);
 
 	// Takes a URL, and extracts the protocol, domain, port, and resource
 	function processURL(URL,URLContext) {
@@ -333,7 +333,7 @@ var Crawler = function(domain,initialPath,initialPort,interval) {
 				// Or if the domain is just the right one, return true.
 				(domain === crawler.domain)	||
 				// Or if we're ignoring WWW subdomains, and both domains, less www. are the same, return true.
-				(crawler.ignoreWWWDomain && crawler.domain.replace(/^www\./i,"") === domain.replace(/^www\./i,"")) ||
+				(crawler.ignoreWWWDomain && crawler.domainToCrawl.replace(/^www\./i,"") === domain.replace(/^www\./i,"")) ||
 				// Or if the domain in question exists in the domain whitelist, return true.
 				domainInWhitelist(domain) ||
 				// Or if we're scanning subdomains, and this domain is a subdomain of the crawler's set domain, return true.
